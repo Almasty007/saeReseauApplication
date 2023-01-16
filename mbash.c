@@ -7,9 +7,11 @@
 #define MAXLI 2048
 char cmd[MAXLI];
 char path[MAXLI];
+char* commandeEntiere[MAXLI];
 int pathidx;
-void mbash();
 int pid;
+void mbash();
+void split();
 
 
 int main(int argc, char** argv) {
@@ -18,32 +20,39 @@ int main(int argc, char** argv) {
     fgets(cmd, MAXLI, stdin);
     pid = fork();
     mbash(cmd);
+    //split();
   }
   return 0;
 }
 
 void mbash() {
-  printf("Execute: %s", cmd);
-  printf("print cmd %%d --> %d \n", *cmd);
-  printf("print cmd %%s --> %s \n", cmd);
+  if(pid == 0){
+      printf("Execute: %s", cmd);
+      printf("print cmd %%d --> %d \n", *cmd);
+      printf("print cmd %%s --> %s \n", cmd);
+      printf("test %d \n", strncmp(cmd, "exit", 4));
 
-  if(pid == 0) {
-    if(strcmp(cmd, "exit")
-    kill(getpid(), 15)
+      //exit
+      if(strncmp(cmd, "exit", 4) == 0) {
+      //tue le pid du parent
+        kill(getppid(), 15);
+
+      }
+      //if()
+
+      else {
+        system(cmd);
+      }
   }
 
-  //exit
-  //tue le pid du parent
-//    printf("try exit \n");
-//    char* killdetail[2048] =  {"kill"};
-//    char* ch = (char*)malloc(2048*sizeof(char));
-//    sprintf(ch, "%d", pid);
-//    printf("pid --> %d", pid);
-//    printf("print killdetail --> %s ; %s \n", killdetail[0], ch);
-//
-//    execve("/bin/kill", killdetail, NULL);
-  } else {
-    //system(cmd);
-  }
-  //test
+}
+void split() {
+    char *tmp;
+    int i = 0;
+    tmp = strtok(cmd, " ");
+    while(tmp != NULL) {
+        commandeEntiere[i] = tmp;
+        tmp = strtok(NULL, " ");
+        i++;
+    }
 }
