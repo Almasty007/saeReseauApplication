@@ -26,7 +26,7 @@ int main() {
         }
         args[i] = NULL;
 
-        if (strcmp(args[0], "cd") == 0) {
+        /*if (strcmp(args[0], "cd") == 0) {
             // Exécuter la commande cd
             chdir(args[1]);
         } else if (strcmp(args[0], "pwd") == 0) {
@@ -34,7 +34,7 @@ int main() {
             char cwd[MAX_LINE_LENGTH];
             getcwd(cwd, sizeof(cwd));
             printf("%s\n", cwd);
-        } else {
+        } else {*/
             // Exécuter la commande via execve
             pid_t pid = fork();
             if (pid == 0) {
@@ -46,6 +46,5 @@ int main() {
                 wait(NULL);
             }
         }
-    }
     return 0;
 }
