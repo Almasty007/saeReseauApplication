@@ -1,70 +1,52 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <assert.h>
-#include <signal.h>
-#include <sys/types.h>
+#include <string.h>
 #include <sys/wait.h>
-#include <pthread.h>
-pthread_mutex_t lock;
-#define MAXLI 2048
-char cmd[MAXLI];
-char path[MAXLI];
-char* commandeEntiere[MAXLI];
-int pathidx;
-int pid;
-void mbash();
-void split();
 
+#define MAX_LINE_LEN 256
 
-int main(int argc, char** argv) {
-  pthread_mutex_lock(&lock);
-  while (1) {
-    printf("Commande: ");
-    fgets(cmd, MAXLI, stdin);
-    pid = fork();
-    mbash(cmd);
-    //split();
-  }
-  pthread_mutex_unlock(&lock);
-  return 0;
-}
+int main() {
+    char command[MAX_LINE_LEN];
 
-void mbash() {
-  if(pid == 0){
-      printf("Execute: %s", cmd);
-      printf("argument cmd %%s --> %s \n", cmd);
+    while (1) {
+        printf("$ ");
+        fgets(command, MAX_LINE_LEN, stdin);
 
-      //exit
-      if(strncmp(cmd, "exit", 4) == 0) {
-      //tue le pid du parent
-        pthread_mutex_unlock(&lock);
-        kill(getppid(), 15);
-        exit(0);
+        // remove the newline character
+        command[strcspn(command, "\n")] = 0;
 
-      }
-      //if()
+        // exit if the command is "exit"
+        if (strcmp(command, "exit") == 0) {
+            break;
+        }
 
-//      else {
-//        system(cmd);
-//      }
-  }
-  else {
-     int status = 0;
-     printf("je suis le pere (%d) et j'attend la mort de mon enfant \n", getpid()) ;
-     wait(&status);
-     printf("Le fils est mort avec le statut %d\n", status);
-  }
+        // create a child process
+        pid_t pid = fork();
+        if (pid == 0) {
+            // the child process will execute the command
+            char* argv[MAX_LINE_LEN];
+            int argc = 0;
 
-}
-void split() {
-    char *tmp;
-    int i = 0;
-    tmp = strtok(cmd, " ");
-    while(tmp != NULL) {
-        commandeEntiere[i] = tmp;
-        tmp = strtok(NULL, " ");
-        i++;
+            // parse the command into arguments
+            char* token = strtok(command, " ");
+            while (token != NULL) {
+                argv[argc++] = token;
+                token = strtok(NULL, " ");
+            }
+            argv[argc] = NULL;
+
+            // execute the command
+            execvp(argv[0], argv);
+
+            // if execvp returns, it means there was an error
+            perror("execvp");
+            exit(1);
+        } else {
+            // the parent process will wait for the child to finish
+            wait(NULL);
+        }
     }
+
+    return 0;
 }
