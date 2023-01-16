@@ -27,10 +27,13 @@ void mbash() {
   printf("print cmd %%d --> %d \n", *cmd);
   printf("print cmd %%s --> %s \n", cmd);
 
+  if(pid == 0) {
+    if(strcmp(cmd, "exit")
+    kill(getpid(), 15)
+  }
+
   //exit
-  if(strcmp(cmd, "exit") && pid==0) {
   //tue le pid du parent
-    kill(getppid(), 15);
 //    printf("try exit \n");
 //    char* killdetail[2048] =  {"kill"};
 //    char* ch = (char*)malloc(2048*sizeof(char));
@@ -40,9 +43,7 @@ void mbash() {
 //
 //    execve("/bin/kill", killdetail, NULL);
   } else {
-    system(cmd);
+    //system(cmd);
   }
-
   //test
-
 }
