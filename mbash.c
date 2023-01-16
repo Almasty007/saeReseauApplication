@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
 
 #define MAX_LINE_LENGTH 256
@@ -26,7 +25,7 @@ int main() {
         }
         args[i] = NULL;
 
-        /*if (strcmp(args[0], "cd") == 0) {
+        if (strcmp(args[0], "cd") == 0) {
             // Exécuter la commande cd
             chdir(args[1]);
         } else if (strcmp(args[0], "pwd") == 0) {
@@ -34,17 +33,18 @@ int main() {
             char cwd[MAX_LINE_LENGTH];
             getcwd(cwd, sizeof(cwd));
             printf("%s\n", cwd);
-        } else {*/
-            // Exécuter la commande via execve
+        } else {
+            // Exécuter la commande via execvp
             pid_t pid = fork();
             if (pid == 0) {
                 // Exécuter la commande dans le processus fils
-                execve(args[0], args, NULL);
+                execvp(args[0], args);
                 exit(0);
             } else if (args[i-1] != "&") {
                 // Attendre la fin de l'exécution de la commande dans le processus père si le & n'est pas présent
                 wait(NULL);
             }
         }
+    }
     return 0;
 }
