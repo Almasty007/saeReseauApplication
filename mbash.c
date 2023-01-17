@@ -4,7 +4,7 @@
 #include <string.h>
 #include <sys/wait.h>
 
-#define MAX_LINE_LEN 2048;
+#define MAX_LINE_LEN 2048
 int pid = 1;
 
 int main() {
