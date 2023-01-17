@@ -5,7 +5,7 @@
 #include <sys/wait.h>
 
 #define MAX_LINE_LEN 256
-int pid;
+int pid = 1;
 
 int main() {
     char command[MAX_LINE_LEN];
@@ -38,9 +38,10 @@ int main() {
         if (strcmp(argv[0], "cd") == 0) {
             printf("%s\n", argv[1]);
             chdir(argv[1]);
-        }
+        }else{
 
         pid = fork();
+        }
 
         if (pid == 0) {
             // the child process will execute the command
