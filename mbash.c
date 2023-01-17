@@ -44,7 +44,7 @@ int main() {
         }
 
         if (pid == 0) {
-            execve("/bin/"+argv[0], argv);
+            execve("/bin/%s",argv[0], argv);
             perror("execvp");
             exit(0);
         } else {
