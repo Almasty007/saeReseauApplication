@@ -46,9 +46,8 @@ int main() {
             perror("execvp");
             exit(0);
         } else {
-            printf("%s\n", argv[0]);
             if (strcmp(argv[0], "cd") == 0) {
-                break;
+                printf("%s\n", argv[0]);
             }
             // the parent process will wait for the child to finish
             wait(NULL);
