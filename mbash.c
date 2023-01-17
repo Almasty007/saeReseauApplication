@@ -47,7 +47,7 @@ int main() {
             exit(0);
         } else {
             if (strcmp(argv[0], "cd") == 0) {
-                printf("%s\n", argv[0]);
+                chdir(argv[1]);
             }
             // the parent process will wait for the child to finish
             wait(NULL);
