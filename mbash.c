@@ -6,19 +6,20 @@
 
 #define MAX_LINE_LEN 256
 int pid = 1;
+int pid = 1;
 
 int main() {
-    char command[MAX_LINE_LEN];
+    char cmd[MAX_LINE_LEN];
 
     while (1) {
         printf("mini_bash_>");
-        fgets(command, MAX_LINE_LEN, stdin);
+        fgets(cmd, MAX_LINE_LEN, stdin);
 
         // remove the newline character
-        command[strcspn(command, "\n")] = 0;
+        cmd[strcspn(cmd, "\n")] = 0;
 
-        // exit if the command is "exit"
-        if (strcmp(command, "exit") == 0) {
+        // exit if the cmd is "exit"
+        if (strcmp(cmd, "exit") == 0) {
             break;
         }
 
@@ -27,8 +28,8 @@ int main() {
         char* argv[MAX_LINE_LEN];
         int argc = 0;
 
-                    // parse the command into arguments
-        char* token = strtok(command, " ");
+                    // parse the cmd into arguments
+        char* token = strtok(cmd, " ");
         while (token != NULL) {
             argv[argc++] = token;
             token = strtok(NULL, " ");
@@ -36,7 +37,6 @@ int main() {
         argv[argc] = NULL;
 
         if (strcmp(argv[0], "cd") == 0) {
-            printf("%s\n", argv[1]);
             chdir(argv[1]);
         }else{
 
@@ -44,19 +44,12 @@ int main() {
         }
 
         if (pid == 0) {
-            // the child process will execute the command
-
-            // execute the command
-            execvp(argv[0], argv);
-
-            // if execvp returns, it means there was an error
+            execve("/bin/"+argv[0], argv);
             perror("execvp");
             exit(0);
         } else {
-            // the parent process will wait for the child to finish
             wait(NULL);
         }
     }
-
     return 0;
 }
