@@ -10,7 +10,7 @@ int main() {
     char command[MAX_LINE_LEN];
 
     while (1) {
-        printf("$ ");
+        printf("mini_bash_>");
         fgets(command, MAX_LINE_LEN, stdin);
 
         // remove the newline character
