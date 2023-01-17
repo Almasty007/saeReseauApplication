@@ -23,7 +23,6 @@ int main() {
         }
 
         // create a child process
-        pid = fork();
 
         char* argv[MAX_LINE_LEN];
         int argc = 0;
@@ -36,6 +35,13 @@ int main() {
         }
         argv[argc] = NULL;
 
+        if (strcmp(argv[0], "cd") == 0) {
+            printf("%s\n", argv[1]);
+            chdir(argv[1]);
+        }
+
+        pid = fork();
+
         if (pid == 0) {
             // the child process will execute the command
 
@@ -46,10 +52,6 @@ int main() {
             perror("execvp");
             exit(0);
         } else {
-            if (strcmp(argv[0], "cd") == 0) {
-                printf("%s\n", argv[1]);
-                chdir(argv[1]);
-            }
             // the parent process will wait for the child to finish
             wait(NULL);
         }
