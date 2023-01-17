@@ -45,8 +45,10 @@ int main() {
         if (pid == 0) {
             char* fullpath = (char *) malloc(MAX_LINE_LEN);
             sprintf(fullpath,"/bin/%s",argv[0]);
-            execve(fullpath, argv);
-            perror("execvp");
+            if(execve(fullpath, argv, NULL) != 0) {
+                perror("execvp");
+            };
+            free(fullpath);
             exit(0);
         } else {
             wait(NULL);
