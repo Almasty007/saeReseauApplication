@@ -24,19 +24,20 @@ int main() {
 
         // create a child process
         pid = fork();
-        if (pid == 0) {
-        printf("%s\n", command);
-            // the child process will execute the command
-            char* argv[MAX_LINE_LEN];
-            int argc = 0;
 
-            // parse the command into arguments
-            char* token = strtok(command, " ");
-            while (token != NULL) {
-                argv[argc++] = token;
-                token = strtok(NULL, " ");
-            }
-            argv[argc] = NULL;
+        char* argv[MAX_LINE_LEN];
+        int argc = 0;
+
+                    // parse the command into arguments
+        char* token = strtok(command, " ");
+        while (token != NULL) {
+            argv[argc++] = token;
+            token = strtok(NULL, " ");
+        }
+        argv[argc] = NULL;
+
+        if (pid == 0) {
+            // the child process will execute the command
 
             // execute the command
             execvp(argv[0], argv);
@@ -45,8 +46,8 @@ int main() {
             perror("execvp");
             exit(0);
         } else {
-            printf("%s\n", command);
-            if (strcmp(command, "cd") == 0) {
+            printf("%s\n", argv[0]);
+            if (strcmp(argv[0], "cd") == 0) {
                 break;
             }
             // the parent process will wait for the child to finish
