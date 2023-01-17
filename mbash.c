@@ -25,6 +25,7 @@ int main() {
         // create a child process
         pid = fork();
         if (pid == 0) {
+        printf("%s\n", command);
             // the child process will execute the command
             char* argv[MAX_LINE_LEN];
             int argc = 0;
