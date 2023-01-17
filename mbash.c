@@ -4,7 +4,7 @@
 #include <string.h>
 #include <sys/wait.h>
 
-#define MAX_LINE_LEN 256
+#define MAX_LINE_LEN 2048;
 int pid = 1;
 
 int main() {
@@ -43,7 +43,9 @@ int main() {
         }
 
         if (pid == 0) {
-            execve("/bin/%s",argv[0], argv);
+            char* fullpath = (char *) malloc(MAX_LINE_LEN);
+            sprintf(fullpath,"/bin/%s",argv[0]);
+            execve(fullpath, argv);
             perror("execvp");
             exit(0);
         } else {
