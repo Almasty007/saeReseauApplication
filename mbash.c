@@ -6,7 +6,6 @@
 
 #define MAX_LINE_LEN 256
 int pid = 1;
-int pid = 1;
 
 int main() {
     char cmd[MAX_LINE_LEN];
