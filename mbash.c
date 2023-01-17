@@ -43,6 +43,10 @@ int main() {
             perror("execvp");
             exit(1);
         } else {
+            printf("%s\n", command);
+            if (strcmp(command, "cd") == 0) {
+                break;
+            }
             // the parent process will wait for the child to finish
             wait(NULL);
         }
