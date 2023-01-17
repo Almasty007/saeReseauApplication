@@ -5,7 +5,7 @@
 #include <sys/wait.h>
 
 #define MAX_LINE_LEN 2048
-int pid = 1;
+int pid;
 
 int main() {
     char cmd[MAX_LINE_LEN];
@@ -40,7 +40,7 @@ int main() {
         }else{
 
         pid = fork();
-        }
+
 
         if (pid == 0) {
             char* fullpath = (char *) malloc(MAX_LINE_LEN);
@@ -53,6 +53,7 @@ int main() {
         } else {
             wait(NULL);
         }
+    }
     }
     return 0;
 }
