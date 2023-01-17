@@ -5,6 +5,7 @@
 #include <sys/wait.h>
 
 #define MAX_LINE_LEN 256
+int pid;
 
 int main() {
     char command[MAX_LINE_LEN];
@@ -22,7 +23,7 @@ int main() {
         }
 
         // create a child process
-        pid_t pid = fork();
+        pid = fork();
         if (pid == 0) {
             // the child process will execute the command
             char* argv[MAX_LINE_LEN];
@@ -41,7 +42,7 @@ int main() {
 
             // if execvp returns, it means there was an error
             perror("execvp");
-            exit(1);
+            exit(0);
         } else {
             printf("%s\n", command);
             if (strcmp(command, "cd") == 0) {
